@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Gallery_App</string>
+    <string name="onboard_title">Create Your design</string>
+    <string name="home_title">Discover</string>
+    <string name="title_nav">For you</string>
+    <string name="desc_nav">Showing 889 photos “for you”</string>
+    <string name="scroll_view_desc">list image special</string>
+</resources>
