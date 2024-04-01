@@ -20,7 +20,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.GallerySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

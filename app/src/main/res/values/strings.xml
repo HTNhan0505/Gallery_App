@@ -6,4 +6,7 @@
     <string name="desc_nav">Showing 889 photos “for you”</string>
     <string name="scroll_view_desc">list image special</string>
     <string name="list_image">grid product</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="library_header">My photos</string>
 </resources>

@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.Gallery_App" parent="Base.Theme.Gallery_App" />
+    <style name="Theme.GallerySplash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/spash_screen</item>
+    </style>
 </resources>
