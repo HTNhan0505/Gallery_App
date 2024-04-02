@@ -18,16 +18,17 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/saveImg"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/selectedbtn"
             android:drawableTop="@drawable/check_icon"
-            android:paddingTop="20dp"
-
-            android:textColor="#fff"
-            tools:ignore="OnClick" />
+            android:paddingTop="10dp"
+            android:textColor="#fff" />
     </RelativeLayout>
 
 
@@ -53,224 +54,52 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/library_header"
         app:layout_constraintTop_toTopOf="@+id/library_header"
-        tools:layout_editor_absoluteX="3dp"
-        tools:ignore="OnClick" />
-
-<!--    <ScrollView-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:contentDescription="@string/list_image"-->
-<!--        android:paddingTop="20dp"-->
-<!--&gt;-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="fill_parent"-->
-<!--            android:layout_height="fill_parent"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <GridLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="fill_parent"-->
-<!--                android:columnCount="2">-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="100dp"-->
-<!--                    android:layout_height="80dp"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_97" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_98" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_99" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_100" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_101" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_98" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_97" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_99" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_101" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="100dp"-->
-<!--                    android:layout_height="80dp"-->
-<!--                    android:layout_rowWeight="1"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="15dp"-->
-
-<!--                    app:cardBackgroundColor="@color/white"-->
-<!--                    app:cardCornerRadius="15dp"-->
-<!--                    app:cardElevation="0dp">-->
-
-<!--                    <ImageView-->
-
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/frame_97" />-->
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--            </GridLayout>-->
-<!--        </LinearLayout>-->
-<!--    </ScrollView>-->
+        tools:ignore="OnClick"
+        tools:layout_editor_absoluteX="3dp" />
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="5dp"
+        android:background="@color/white"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/back_to_home"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/roudbtn"
+        android:drawableTop="@drawable/baseline_close_24"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        android:paddingTop="20dp"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/library_header"
+         />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/go_to_album"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rectanglebtn"
+        android:backgroundTint="#C35656"
+        android:drawableEnd="@drawable/arrow_dow"
+        android:gravity="center_horizontal"
+        android:paddingVertical="17dp"
+        android:paddingRight="10dp"
+        android:text="@string/album_btn_text"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

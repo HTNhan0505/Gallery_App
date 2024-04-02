@@ -9,4 +9,9 @@
     <style name="Theme.GallerySplash" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/spash_screen</item>
     </style>
+
+    <style name="Theme.GridLayout" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
 </resources>

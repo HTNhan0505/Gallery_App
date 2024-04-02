@@ -22,6 +22,7 @@ class ListImageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.addImgBtn.setOnClickListener {
+
             findNavController().navigate(R.id.action_listImageFragment_to_library2)
         }
 
