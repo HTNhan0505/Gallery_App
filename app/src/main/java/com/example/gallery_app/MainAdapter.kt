@@ -17,6 +17,7 @@ class MainAdapter(
 
 
     class LibraryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         val imageView: ImageView = itemView.findViewById(R.id.imageShow)
         val selected: ImageView = itemView.findViewById(R.id.imageSelected)
     }
@@ -42,8 +43,8 @@ class MainAdapter(
 
 
         holder.imageView.setOnClickListener {
-            if(itemSelectList.contains(position)) {
-                itemSelectList.remove(position)
+            if(itemSelectList.contains(image.image)) {
+                itemSelectList.remove(image.image)
                 holder.selected.visibility = View.GONE
                 image.selected = false
                 if(itemSelectList.isEmpty()) {
@@ -58,25 +59,15 @@ class MainAdapter(
 
     private fun selectItem(holder: MainAdapter.LibraryHolder, item: DataItem, position: Int) {
         isEnable = true
-        itemSelectList.add(position)
+        itemSelectList.add(item.image)
         item.selected = true
         holder.selected.visibility = View.VISIBLE
         showBtn(true)
     }
 
-    fun deleteSelectItem() {
-        if(itemSelectList.isEmpty()) {
-            dataItemList.removeAll{item -> item.selected}
-            isEnable = true
-            itemSelectList.clear()
-        }
-    }
 
     fun saveImageInDB() {
-        if(itemSelectList.isEmpty()) {
-
-        } else {
-
-        }
+        println("List : $itemSelectList")
     }
+
 }
