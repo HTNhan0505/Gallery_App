@@ -1,23 +1,25 @@
 package com.example.gallery_app
 
+import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.gallery_app.databinding.FragmentLibraryBinding
 import com.example.gallery_app.databinding.LibraryItemBinding
 
-class MainAdapter(
-    private val dataItemList: ArrayList<DataItem>,
-    private val showBtn: (Boolean) -> Unit
-) : RecyclerView.Adapter<MainAdapter.LibraryHolder>() {
+class MainAdapter(private val showBtn: (Boolean) -> Unit) :
+    RecyclerView.Adapter<MainAdapter.LibraryHolder>() {
     private var isEnable = false
-    private val itemSelectList = mutableListOf<Int>()
+    private val itemSelectList: MutableList<String> = mutableListOf()
 
+    private var imageList: List<String> = listOf()
 
     class LibraryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         val imageView: ImageView = itemView.findViewById(R.id.imageShow)
         val selected: ImageView = itemView.findViewById(R.id.imageSelected)
     }
@@ -28,25 +30,26 @@ class MainAdapter(
     }
 
     override fun getItemCount(): Int {
-        return dataItemList.size
+        return imageList.size
     }
 
     override fun onBindViewHolder(holder: LibraryHolder, position: Int) {
-        val image = dataItemList[position]
-        holder.imageView.setImageResource(image.image)
+        val image = imageList[position]
         holder.selected.visibility = View.GONE
+        Glide.with(holder.itemView)
+            .load(image)
+            .apply(RequestOptions.centerCropTransform())
+            .into(holder.imageView)
 
         holder.imageView.setOnLongClickListener {
-            selectItem(holder, image, position)
+            selectItem(holder,image,position)
             true
         }
 
-
         holder.imageView.setOnClickListener {
-            if(itemSelectList.contains(image.image)) {
-                itemSelectList.remove(image.image)
+            if(itemSelectList.contains(image)) {
+                itemSelectList.remove(image)
                 holder.selected.visibility = View.GONE
-                image.selected = false
                 if(itemSelectList.isEmpty()) {
                     showBtn(false)
                     isEnable = false
@@ -55,19 +58,25 @@ class MainAdapter(
                 selectItem(holder,image,position)
             }
         }
+
     }
 
-    private fun selectItem(holder: MainAdapter.LibraryHolder, item: DataItem, position: Int) {
+    fun setImageList(images: List<String>) {
+        imageList = images
+    }
+
+    private fun selectItem(holder: LibraryHolder,item:String ,position: Int) {
         isEnable = true
-        itemSelectList.add(item.image)
-        item.selected = true
+        itemSelectList+=item
         holder.selected.visibility = View.VISIBLE
         showBtn(true)
     }
 
 
     fun saveImageInDB() {
+
         println("List : $itemSelectList")
     }
+
 
 }

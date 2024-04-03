@@ -1,12 +1,19 @@
 package com.example.gallery_app
 
 
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,8 +24,10 @@ import java.io.File
 class Library : Fragment() {
     private lateinit var binding: View
     private lateinit var recyclerView: RecyclerView
-    private lateinit var imageList: ArrayList<DataItem>
+    private lateinit var images: ArrayList<String>
     private lateinit var imageAdapter: MainAdapter
+    private val PERMISSION_CODE = 101
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,53 +36,80 @@ class Library : Fragment() {
         val root = inflater.inflate(R.layout.fragment_library, container, false)
         binding = root
 
-        init()
-        showSaveBtn(false)
+        if (ContextCompat.checkSelfPermission(
+                requireActivity().applicationContext,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                PERMISSION_CODE
+            )
+        } else {
+            loadImage()
+            showSaveBtn(false)
+        }
+
 
         return root
     }
 
-    private fun init() {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadImagesFromGallery()
+            } else {
+                return
+            }
+        }
+    }
+
+    fun loadImage() {
+        val imagePaths = loadImagesFromGallery()
         recyclerView = binding.findViewById(R.id.listImage)
         recyclerView.setHasFixedSize(true)
+        imageAdapter = MainAdapter(){ show -> showSaveBtn(show) }
+        imageAdapter.setImageList(imagePaths)
 
         this.activity?.baseContext?.let {
+            images = loadImagesFromGallery()
             recyclerView.layoutManager = GridLayoutManager(it, 3)
-            imageList = ArrayList()
-            addData()
         }
 
-
-        imageAdapter = MainAdapter(imageList) { show -> showSaveBtn(show) }
         recyclerView.adapter = imageAdapter
     }
 
-    private fun addData() {
-        imageList.add(DataItem(R.drawable.film, false))
-        imageList.add(DataItem(R.drawable.camera, false))
-        imageList.add(DataItem(R.drawable.frame_100, false))
-        imageList.add(DataItem(R.drawable.frame_30, false))
-        imageList.add(DataItem(R.drawable.frame_41, false))
-        imageList.add(DataItem(R.drawable.frame_39, false))
-        imageList.add(DataItem(R.drawable.frame_44, false))
-        imageList.add(DataItem(R.drawable.frame_45, false))
-        imageList.add(DataItem(R.drawable.frame_49, false))
-        imageList.add(DataItem(R.drawable.frame_62, false))
-        imageList.add(DataItem(R.drawable.frame_51, false))
-        imageList.add(DataItem(R.drawable.frame_98, false))
-        imageList.add(DataItem(R.drawable.frame_99, false))
-        imageList.add(DataItem(R.drawable.frame_101, false))
-        imageList.add(DataItem(R.drawable.frame_31, false))
-        imageList.add(DataItem(R.drawable.frame_52, false))
-        imageList.add(DataItem(R.drawable.frame_40, false))
-        imageList.add(DataItem(R.drawable.frame_42, false))
-        imageList.add(DataItem(R.drawable.frame_30, false))
-        imageList.add(DataItem(R.drawable.frame_45, false))
-        imageList.add(DataItem(R.drawable.frame_44, false))
-        imageList.add(DataItem(R.drawable.frame_99, false))
-        imageList.add(DataItem(R.drawable.frame_51, false))
 
+    private fun loadImagesFromGallery(): ArrayList<String> {
+        val imagePaths = ArrayList<String>()
+
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = requireActivity().contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            null,
+            null,
+            null
+        )
+
+        cursor?.use {
+            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            while (cursor.moveToNext()) {
+                val imagePath = cursor.getString(columnIndex)
+                imagePaths.add(imagePath)
+            }
+        }
+
+        return imagePaths
     }
+
+
 
     fun showSaveBtn(show: Boolean) {
         if (show) {
@@ -84,7 +120,7 @@ class Library : Fragment() {
         }
     }
 
-    fun savDB() {
+    private fun savDB() {
         imageAdapter.saveImageInDB()
         showSaveBtn(false)
     }
