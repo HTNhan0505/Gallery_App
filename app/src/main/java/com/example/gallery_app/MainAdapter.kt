@@ -17,7 +17,6 @@ class MainAdapter(private var imageList:List<String>,private val showBtn: (Boole
     private var isEnable = true
     private lateinit var db: DataHelper
     private var itemSelectList: MutableList<String> = mutableListOf()
-//    private var imageList: List<String> = listOf()
     private var checkedItems: MutableList<Boolean> = mutableListOf()
 
     class LibraryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +28,7 @@ class MainAdapter(private var imageList:List<String>,private val showBtn: (Boole
         val view = LayoutInflater.from(parent.context).inflate(R.layout.library_item, parent, false)
         setCheckSizeItem(imageList.size)
         db = DataHelper(parent.context)
+        showBtn(false)
         return LibraryHolder(view)
     }
 
@@ -52,7 +52,7 @@ class MainAdapter(private var imageList:List<String>,private val showBtn: (Boole
                 checkedItems[position] = isChecked
                 if (itemSelectList.isEmpty()) {
                     showBtn(false)
-                    isEnable = false
+
                 }
             } else if (isEnable) {
                 selectItem(holder, image, position)
@@ -66,7 +66,7 @@ class MainAdapter(private var imageList:List<String>,private val showBtn: (Boole
                 checkedItems[position] = isChecked
                 if (itemSelectList.isEmpty()) {
                     showBtn(false)
-                    isEnable = false
+
                 }
             } else if (isEnable) {
                 selectItem(holder, image, position)

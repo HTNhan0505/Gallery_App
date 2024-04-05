@@ -33,7 +33,6 @@ class Library : Fragment() {
     private lateinit var imageAdapter: MainAdapter
     private val PERMISSION_CODE = 101
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +43,6 @@ class Library : Fragment() {
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            println("If : ")
             requestPermission()
 //            ActivityCompat.requestPermissions(
 //                requireActivity(),
@@ -52,7 +50,6 @@ class Library : Fragment() {
 //                PERMISSION_CODE
 //            )
         } else {
-            println("Else : ")
             loadImage()
             showSaveBtn(false)
         }
@@ -71,7 +68,6 @@ class Library : Fragment() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 loadImage()
             } else {
-                println("Decline ")
             }
         }
     }
