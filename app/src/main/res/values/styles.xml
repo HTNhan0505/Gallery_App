@@ -3,4 +3,8 @@
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/spash_screen</item>
     </style>
+    <style name="CustomCheckbox02" parent="Theme.AppCompat">
+        <item name="android:button">@drawable/checkbox_selector</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

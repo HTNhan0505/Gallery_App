@@ -1,12 +1,15 @@
 package com.example.gallery_app
 
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +21,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gallery_app.databinding.FragmentLibraryBinding
+import com.example.gallery_app.databinding.FragmentListImageBinding
 import java.io.File
 
 
 class Library : Fragment() {
-    private lateinit var binding: View
+    private lateinit var binding: FragmentLibraryBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var images: ArrayList<String>
     private lateinit var imageAdapter: MainAdapter
@@ -32,27 +37,28 @@ class Library : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_library, container, false)
-        binding = root
-
+    ): View {
+        binding = FragmentLibraryBinding.inflate(inflater, container, false)
         if (ContextCompat.checkSelfPermission(
-                requireActivity().applicationContext,
+                requireContext(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                PERMISSION_CODE
-            )
+            println("If : ")
+            requestPermission()
+//            ActivityCompat.requestPermissions(
+//                requireActivity(),
+//                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+//                PERMISSION_CODE
+//            )
         } else {
+            println("Else : ")
             loadImage()
             showSaveBtn(false)
         }
 
 
-        return root
+        return binding.root
     }
 
     override fun onRequestPermissionsResult(
@@ -61,21 +67,37 @@ class Library : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_CODE) {
+        if (requestCode == PERMISSION_CODE && grantResults.isNotEmpty()) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                loadImagesFromGallery()
+                loadImage()
             } else {
-                return
+                println("Decline ")
             }
         }
     }
 
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES,android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                PERMISSION_CODE
+            )
+        } else {
+            requestPermissions(
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                PERMISSION_CODE
+            )
+        }
+    }
+
     fun loadImage() {
+        println("Load ")
         val imagePaths = loadImagesFromGallery()
-        recyclerView = binding.findViewById(R.id.listImage)
+        imageAdapter = MainAdapter(imagePaths) { show -> showSaveBtn(show) }
+
+        recyclerView = binding.root.findViewById(R.id.listImage)
+
         recyclerView.setHasFixedSize(true)
-        imageAdapter = MainAdapter(){ show -> showSaveBtn(show) }
-        imageAdapter.setImageList(imagePaths)
 
         this.activity?.baseContext?.let {
             images = loadImagesFromGallery()
@@ -110,12 +132,11 @@ class Library : Fragment() {
     }
 
 
-
     fun showSaveBtn(show: Boolean) {
         if (show) {
-            binding.findViewById<AppCompatButton>(R.id.saveImg).visibility = View.VISIBLE
+            binding.root.findViewById<AppCompatButton>(R.id.saveImg).visibility = View.VISIBLE
         } else {
-            binding.findViewById<AppCompatButton>(R.id.saveImg).visibility = View.INVISIBLE
+            binding.root.findViewById<AppCompatButton>(R.id.saveImg).visibility = View.INVISIBLE
 
         }
     }
@@ -128,13 +149,12 @@ class Library : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.findViewById<AppCompatButton>(R.id.back_to_home).setOnClickListener {
+        binding.root.findViewById<AppCompatButton>(R.id.back_to_home).setOnClickListener {
             findNavController().navigate(R.id.action_library2_to_listImageFragment)
         }
-        binding.findViewById<AppCompatButton>(R.id.saveImg).setOnClickListener {
+        binding.root.findViewById<AppCompatButton>(R.id.saveImg).setOnClickListener {
             savDB()
         }
-
     }
 
 
