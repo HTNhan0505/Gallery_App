@@ -1,36 +1,29 @@
-package com.example.gallery_app
+package com.example.gallery_app.Fragments
 
 
-import android.app.Activity
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gallery_app.Adapter.LibraryAdapter
+import com.example.gallery_app.R
 import com.example.gallery_app.databinding.FragmentLibraryBinding
-import com.example.gallery_app.databinding.FragmentListImageBinding
-import java.io.File
 
 
-class Library : Fragment() {
+class LibraryFragment : Fragment() {
     private lateinit var binding: FragmentLibraryBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var images: ArrayList<String>
-    private lateinit var imageAdapter: MainAdapter
+    private lateinit var imageAdapter: LibraryAdapter
     private val PERMISSION_CODE = 101
 
     override fun onCreateView(
@@ -38,6 +31,11 @@ class Library : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLibraryBinding.inflate(inflater, container, false)
+
+        checkPermissions()
+        return binding.root
+    }
+    private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -53,9 +51,6 @@ class Library : Fragment() {
             loadImage()
             showSaveBtn(false)
         }
-
-
-        return binding.root
     }
 
     override fun onRequestPermissionsResult(
@@ -87,12 +82,10 @@ class Library : Fragment() {
     }
 
     fun loadImage() {
-        println("Load ")
         val imagePaths = loadImagesFromGallery()
-        imageAdapter = MainAdapter(imagePaths) { show -> showSaveBtn(show) }
+        imageAdapter = LibraryAdapter(imagePaths) { show -> showSaveBtn(show) }
 
-        recyclerView = binding.root.findViewById(R.id.listImage)
-
+        recyclerView = binding.listImage
         recyclerView.setHasFixedSize(true)
 
         this.activity?.baseContext?.let {
@@ -129,12 +122,7 @@ class Library : Fragment() {
 
 
     fun showSaveBtn(show: Boolean) {
-        if (show) {
-            binding.root.findViewById<AppCompatButton>(R.id.saveImg).visibility = View.VISIBLE
-        } else {
-            binding.root.findViewById<AppCompatButton>(R.id.saveImg).visibility = View.INVISIBLE
-
-        }
+        binding.saveImg.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 
     private fun savDB() {
@@ -145,12 +133,14 @@ class Library : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.root.findViewById<AppCompatButton>(R.id.back_to_home).setOnClickListener {
+        binding.backToHome.setOnClickListener {
             findNavController().navigate(R.id.action_library2_to_listImageFragment)
         }
-        binding.root.findViewById<AppCompatButton>(R.id.saveImg).setOnClickListener {
+
+        binding.saveImg.setOnClickListener {
             savDB()
         }
+
     }
 
 

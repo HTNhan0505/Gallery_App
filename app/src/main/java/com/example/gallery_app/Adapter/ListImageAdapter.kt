@@ -1,4 +1,4 @@
-package com.example.gallery_app
+package com.example.gallery_app.Adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gallery_app.Data.Image
+import com.example.gallery_app.R
 
-class ListImageAdapter(private var images:List<Image>,context: Context) :
+class ListImageAdapter(private var images:List<Image>, context: Context) :
     RecyclerView.Adapter<ListImageAdapter.ListImageViewHolder>() {
-
-
 
     class ListImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageHome)

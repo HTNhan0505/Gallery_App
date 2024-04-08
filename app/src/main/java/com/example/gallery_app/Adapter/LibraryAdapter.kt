@@ -1,8 +1,6 @@
-package com.example.gallery_app
+package com.example.gallery_app.Adapter
 
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +9,12 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.gallery_app.Controller.DataHelper
+import com.example.gallery_app.Data.Image
+import com.example.gallery_app.R
 
-class MainAdapter(private var imageList:List<String>,private val showBtn: (Boolean) -> Unit) :
-    RecyclerView.Adapter<MainAdapter.LibraryHolder>() {
+class LibraryAdapter(private var imageList:List<String>, private val showBtn: (Boolean) -> Unit) :
+    RecyclerView.Adapter<LibraryAdapter.LibraryHolder>() {
     private var isEnable = true
     private lateinit var db: DataHelper
     private var itemSelectList: MutableList<String> = mutableListOf()

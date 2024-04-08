@@ -1,4 +1,4 @@
-package com.example.gallery_app
+package com.example.gallery_app.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gallery_app.Controller.DataHelper
+import com.example.gallery_app.Adapter.ListImageAdapter
+import com.example.gallery_app.R
 import com.example.gallery_app.databinding.FragmentListImageBinding
 
 class ListImageFragment : Fragment() {
@@ -21,7 +24,7 @@ class ListImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentListImageBinding.inflate(inflater, container, false)
-        loadImage()
+
         return binding.root
     }
 
@@ -45,6 +48,7 @@ class ListImageFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadImage()
         binding.addImgBtn.setOnClickListener {
             findNavController().navigate(R.id.action_listImageFragment_to_library2)
         }

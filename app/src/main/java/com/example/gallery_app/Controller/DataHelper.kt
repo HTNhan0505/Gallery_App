@@ -1,9 +1,10 @@
-package com.example.gallery_app
+package com.example.gallery_app.Controller
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.gallery_app.Data.Image
 
 class DataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VER) {
 

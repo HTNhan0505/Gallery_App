@@ -2,9 +2,11 @@ package com.example.gallery_app
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gallery_app.Activity.HomeActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,11 +14,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val animation = AnimationUtils.loadAnimation(this, androidx.transition.R.anim.abc_fade_out)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(p0: Animation?) {
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        },3000)
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                navigateToHomeActivity()
+            }
+
+            override fun onAnimationRepeat(p0: Animation?) {
+
+            }
+
+        })
+        findViewById<View>(R.id.splash_screen_layout).startAnimation(animation)
+
     }
+
+
+    private fun navigateToHomeActivity() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 }

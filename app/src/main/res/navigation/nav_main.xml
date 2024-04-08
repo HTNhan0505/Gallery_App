@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/listImageFragment"
-        android:name="com.example.gallery_app.ListImageFragment"
+        android:name="com.example.gallery_app.Fragments.ListImageFragment"
         android:label="fragment_list_image"
         tools:layout="@layout/fragment_list_image">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/library2"
-        android:name="com.example.gallery_app.Library"
+        android:name="com.example.gallery_app.Fragments.LibraryFragment"
         android:label="fragment_library"
         tools:layout="@layout/fragment_library">
         <action

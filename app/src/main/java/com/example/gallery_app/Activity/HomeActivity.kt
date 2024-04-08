@@ -1,7 +1,8 @@
-package com.example.gallery_app
+package com.example.gallery_app.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.gallery_app.R
 
 class HomeActivity : AppCompatActivity() {
 
