@@ -1,19 +1,27 @@
 package com.example.gallery_app.Adapter
 
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
+import androidx.collection.LruCache
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.gallery_app.Controller.DataHelper
 import com.example.gallery_app.Data.Image
 import com.example.gallery_app.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import java.net.URL
 
-class LibraryAdapter(private var imageList:List<String>, private val showBtn: (Boolean) -> Unit) :
+class LibraryAdapter(private var imageList: List<String>, private val showBtn: (Boolean) -> Unit) :
     RecyclerView.Adapter<LibraryAdapter.LibraryHolder>() {
     private var isEnable = true
     private lateinit var db: DataHelper
@@ -37,14 +45,43 @@ class LibraryAdapter(private var imageList:List<String>, private val showBtn: (B
         return imageList.size
     }
 
+
+    suspend fun readBitmapAndScale(path: String): Bitmap {
+        val options = BitmapFactory.Options()
+
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(path, options)
+        options.inSampleSize = 4
+        options.inJustDecodeBounds = false
+
+        return BitmapFactory.decodeFile(path, options)
+    }
+    private suspend fun getImageBitmap(imageUrl: String): Bitmap? {
+        var bitmap: Bitmap? = ImageCache.getBitmapFromCache(imageUrl)
+        if (bitmap == null) {
+            bitmap = readBitmapAndScale(imageUrl)
+
+            ImageCache.addBitmapToCache(imageUrl, bitmap)
+        }
+        return bitmap
+    }
+    private fun processImages(holder: LibraryHolder, imagePath: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val bitmap = getImageBitmap(imagePath)
+
+            withContext(Dispatchers.Main) {
+                holder.imageView.setImageBitmap(bitmap)
+            }
+
+        }
+
+
+    }
+
     override fun onBindViewHolder(holder: LibraryHolder, position: Int) {
         val image = imageList[position]
         val isChecked = checkedItems[position]
-
-        Glide.with(holder.itemView)
-            .load(image)
-            .apply(RequestOptions.centerCropTransform())
-            .into(holder.imageView)
+        processImages(holder, image)
 
         holder.selected.setOnClickListener {
             if (itemSelectList.contains(image)) {
@@ -76,10 +113,6 @@ class LibraryAdapter(private var imageList:List<String>, private val showBtn: (B
 
     }
 
-//    fun setImageList(images: List<String>) {
-//        imageList = images
-//        setCheckSizeItem(imageList.size)
-//    }
 
     private fun setCheckSizeItem(size: Int) {
         checkedItems = MutableList(size) { false }
@@ -96,14 +129,13 @@ class LibraryAdapter(private var imageList:List<String>, private val showBtn: (B
 
     fun saveImageInDB() {
         itemSelectList.forEachIndexed { index, s ->
-            var image = Image(index,s)
+            var image = Image(index, s)
             db.addImage(image)
         }
         showBtn(false)
         notifyDataSetChanged()
 
     }
-
 
 
 }
