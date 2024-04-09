@@ -51,35 +51,47 @@ class LibraryAdapter(
 
 
     override fun onBindViewHolder(holder: LibraryHolder, position: Int) {
-
         val image = imageList[position]
         val bitmapSrc = bitmapList[position]
-
-        val isChecked = checkedItems[position]
+        val isSelected = checkedItems[position]
+        holder.selected.isChecked = isSelected
         holder.imageView.setImageBitmap(bitmapSrc)
 
-        holder.selected.setOnClickListener {
-            if (itemSelectList.contains(image)) {
-                itemSelectList.remove(image)
+        holder.selected.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (compoundButton.isPressed) {
                 holder.selected.isChecked = isChecked
                 checkedItems[position] = isChecked
+                if (isChecked) {
+                    addItem(holder, image, position)
+                } else {
+                    itemSelectList.remove(image)
+                }
                 if (itemSelectList.isEmpty()) {
                     showBtn(false)
-
                 }
-            } else if (isEnable) {
-                selectItem(holder, image, position)
             }
         }
 
+//        holder.selected.setOnClickListener {
+//            if (itemSelectList.contains(image)) {
+//                itemSelectList.remove(image)
+//                holder.selected.isChecked = isChecked
+//                checkedItems[position] = isChecked
+//                if (itemSelectList.isEmpty()) {
+//                    showBtn(false)
+//                }
+//            } else if (isEnable) {
+//                selectItem(holder, image, position)
+//            }
+//        }
+
         holder.imageView.setOnClickListener {
-            if (itemSelectList.contains(image)) {
+            if (itemSelectList.contains(image) || isSelected) {
                 itemSelectList.remove(image)
-                holder.selected.isChecked = isChecked
-                checkedItems[position] = isChecked
+                holder.selected.isChecked = false
+                checkedItems[position] = false
                 if (itemSelectList.isEmpty()) {
                     showBtn(false)
-
                 }
             } else if (isEnable) {
                 selectItem(holder, image, position)
@@ -100,6 +112,12 @@ class LibraryAdapter(
         holder.selected.isChecked = true
         showBtn(true)
     }
+    private fun addItem(holder: LibraryHolder, item: String, position: Int) {
+        isEnable = true
+        itemSelectList += item
+        checkedItems[position] = true
+        showBtn(true)
+    }
 
 
     fun saveImageInDB() {
@@ -107,6 +125,10 @@ class LibraryAdapter(
             var image = Image(index, s)
             db.addImage(image)
         }
+        itemSelectList.clear()
+        setCheckSizeItem(imageList.size)
+
+
         showBtn(false)
         notifyDataSetChanged()
 

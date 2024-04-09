@@ -1,6 +1,7 @@
 package com.example.gallery_app.Fragments
 
 
+import android.app.Dialog
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -28,7 +30,6 @@ class LibraryFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: LibraryAdapter
     private val PERMISSION_CODE = 101
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,8 +39,11 @@ class LibraryFragment : Fragment() {
         return binding.root
     }
 
-    private fun checkPermissions() {
+    private fun loading(load: Boolean) {
+        binding.progressBar.visibility = if (load) View.VISIBLE else View.GONE
+    }
 
+    private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -84,6 +88,7 @@ class LibraryFragment : Fragment() {
     }
 
     fun loadImage() {
+        loading(true)
         val imagePaths = loadImagesFromGallery()
         recyclerView = binding.listImage
         recyclerView.setHasFixedSize(true)
@@ -95,10 +100,13 @@ class LibraryFragment : Fragment() {
             val bitmap = HandlerBitmap.getImageBitmap(imagePaths)
 
             withContext(Dispatchers.Main) {
+
                 imageAdapter = LibraryAdapter(bitmap, imagePaths) { show -> showSaveBtn(show) }
                 recyclerView.adapter = imageAdapter
+                loading(false)
             }
         }
+
 
 
     }
