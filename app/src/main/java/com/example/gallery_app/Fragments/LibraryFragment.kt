@@ -8,21 +8,24 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gallery_app.Adapter.LibraryAdapter
+import com.example.gallery_app.Controller.HandlerBitmap
 import com.example.gallery_app.R
 import com.example.gallery_app.databinding.FragmentLibraryBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class LibraryFragment : Fragment() {
     private lateinit var binding: FragmentLibraryBinding
     private lateinit var recyclerView: RecyclerView
-    private lateinit var images: ArrayList<String>
     private lateinit var imageAdapter: LibraryAdapter
     private val PERMISSION_CODE = 101
 
@@ -31,22 +34,18 @@ class LibraryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLibraryBinding.inflate(inflater, container, false)
-
         checkPermissions()
         return binding.root
     }
+
     private fun checkPermissions() {
+
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermission()
-//            ActivityCompat.requestPermissions(
-//                requireActivity(),
-//                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-//                PERMISSION_CODE
-//            )
         } else {
             loadImage()
             showSaveBtn(false)
@@ -70,7 +69,10 @@ class LibraryFragment : Fragment() {
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(
-                arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES,android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                arrayOf(
+                    android.Manifest.permission.READ_MEDIA_IMAGES,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
                 PERMISSION_CODE
             )
         } else {
@@ -83,17 +85,22 @@ class LibraryFragment : Fragment() {
 
     fun loadImage() {
         val imagePaths = loadImagesFromGallery()
-        imageAdapter = LibraryAdapter(imagePaths) { show -> showSaveBtn(show) }
-
         recyclerView = binding.listImage
         recyclerView.setHasFixedSize(true)
-
         this.activity?.baseContext?.let {
-            images = loadImagesFromGallery()
             recyclerView.layoutManager = GridLayoutManager(it, 3)
         }
 
-        recyclerView.adapter = imageAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            val bitmap = HandlerBitmap.getImageBitmap(imagePaths)
+
+            withContext(Dispatchers.Main) {
+                imageAdapter = LibraryAdapter(bitmap, imagePaths) { show -> showSaveBtn(show) }
+                recyclerView.adapter = imageAdapter
+            }
+        }
+
+
     }
 
 

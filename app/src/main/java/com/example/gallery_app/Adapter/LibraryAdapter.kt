@@ -21,7 +21,11 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.net.URL
 
-class LibraryAdapter(private var imageList: List<String>, private val showBtn: (Boolean) -> Unit) :
+class LibraryAdapter(
+    private var bitmapList: MutableList<Bitmap>,
+    private var imageList: List<String>,
+    private val showBtn: (Boolean) -> Unit
+) :
     RecyclerView.Adapter<LibraryAdapter.LibraryHolder>() {
     private var isEnable = true
     private lateinit var db: DataHelper
@@ -46,42 +50,13 @@ class LibraryAdapter(private var imageList: List<String>, private val showBtn: (
     }
 
 
-    suspend fun readBitmapAndScale(path: String): Bitmap {
-        val options = BitmapFactory.Options()
-
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(path, options)
-        options.inSampleSize = 4
-        options.inJustDecodeBounds = false
-
-        return BitmapFactory.decodeFile(path, options)
-    }
-    private suspend fun getImageBitmap(imageUrl: String): Bitmap? {
-        var bitmap: Bitmap? = ImageCache.getBitmapFromCache(imageUrl)
-        if (bitmap == null) {
-            bitmap = readBitmapAndScale(imageUrl)
-
-            ImageCache.addBitmapToCache(imageUrl, bitmap)
-        }
-        return bitmap
-    }
-    private fun processImages(holder: LibraryHolder, imagePath: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val bitmap = getImageBitmap(imagePath)
-
-            withContext(Dispatchers.Main) {
-                holder.imageView.setImageBitmap(bitmap)
-            }
-
-        }
-
-
-    }
-
     override fun onBindViewHolder(holder: LibraryHolder, position: Int) {
+
         val image = imageList[position]
+        val bitmapSrc = bitmapList[position]
+
         val isChecked = checkedItems[position]
-        processImages(holder, image)
+        holder.imageView.setImageBitmap(bitmapSrc)
 
         holder.selected.setOnClickListener {
             if (itemSelectList.contains(image)) {
